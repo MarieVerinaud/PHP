@@ -23,7 +23,7 @@
 		{
 			?>
 			    <p>
-			    <strong><?php echo $donnees['pseudo']; ?></strong> : <?php echo $donnees['message']; ?>
+			    <strong><?php echo $donnees['pseudo']; ?></strong> (<?php echo $donnees['heure']; ?>) : <?php echo $donnees['message']; ?>
 			   </p>
 			<?php
 		}
