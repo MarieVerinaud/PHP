@@ -23,6 +23,6 @@ if (isset($_POST['pseudo']) AND isset($_POST['message']))
 		));
 }
 
-header('Location: minichat.php');
+header('Location: minichat.php?pseudo=' . $pseudo);
 
 ?>

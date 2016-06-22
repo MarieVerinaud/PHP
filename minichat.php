@@ -7,13 +7,28 @@
     <body>
         <form action="minichat_post.php" method="post">
             <p>
-            	<label>Pseudo : <input type="text" name="pseudo" /></label>
-        	</p>
+            	<?php
+                if (isset($_GET['pseudo']))
+                {
+                ?>
+                    <label>Pseudo : <input type="text" name="pseudo" value=<?php echo $_GET['pseudo']?>></label>
+            </p>
+                <?php
+                }
+                else
+                {
+                ?>
+                    <label>Pseudo : <input type="text" name="pseudo" value="" /></label>
+            </p>
+                <?php
+                }
+                ?>
+
         	<p>
             	<label>Message : <input type="text" name="message" /></label></br>
         	</p>
         	<p>
-            	<input type="submit" value="Envoyer" />
+            	<input type="submit" value="Envoyer"/>
             </p>
         </form>
         <?php
