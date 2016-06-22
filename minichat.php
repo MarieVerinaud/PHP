@@ -29,6 +29,7 @@
         	</p>
         	<p>
             	<input type="submit" value="Envoyer"/>
+                <input type="button" value="Rafraîchir" onclick="window.location.reload(false)"/>
             </p>
         </form>
         <?php
