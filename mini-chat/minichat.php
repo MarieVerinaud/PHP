@@ -52,12 +52,12 @@
         }
         $requete_nb->closeCursor();
 
-        $requete_recup = $bdd->query("SELECT * FROM mini_chat ORDER BY ID DESC LIMIT ".(($cPage-1)*$perPage).",$perPage");
+        $requete_recup = $bdd->query("SELECT pseudo, message, DATE_FORMAT(date_message, '%d/%m/%Y %H:%i:%s') AS date_message FROM mini_chat ORDER BY ID DESC LIMIT ".(($cPage-1)*$perPage).",$perPage");
 		while($donnees = $requete_recup->fetch())
 		{
 			?>
 			    <p>
-			    <strong><?php echo $donnees['pseudo']; ?></strong> (<?php echo $donnees['heure']; ?>) : <?php echo $donnees['message']; ?>
+                [<?php echo $donnees['date_message']; ?>] <strong><?php echo $donnees['pseudo']; ?></strong> : <?php echo $donnees['message']; ?>
 			   </p>
 			<?php
 		}
@@ -70,7 +70,9 @@
             }
             else
             {
-                echo " <a href=\"minichat.php?p=$i\">$i</a> /";
+                ?>
+                <a href="minichat.php?pseudo=<?php echo $_GET['pseudo']; ?>&amp;p=<?php echo $i; ?>"><?php echo $i; ?></a> /
+                <?php
             }
         }            
 		
