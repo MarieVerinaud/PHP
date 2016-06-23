@@ -1,0 +1,4 @@
+AuthName "Se connecter à la page d'administration protégée"
+AuthType Basic
+AuthUserFile "C:/wamp/www/cours_php/TP/blog_commentaire/admin/.htpasswd"
+Require valid-user

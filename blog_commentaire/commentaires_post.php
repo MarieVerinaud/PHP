@@ -32,6 +32,7 @@ if (isset($_POST['pseudo']) AND isset($_POST['commentaire']) AND isset($_GET['ID
 		));
 
 	echo 'Votre commentaire a bien été ajouté !';
+	$requete_ajout->closeCursor();
 }
 
 header('Location: commentaires.php?ID='. $_GET['ID']);
