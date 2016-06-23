@@ -18,9 +18,26 @@
                 die('Erreur : ' . $e->getMessage());
         }        
 
-        $requete_recup = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date FROM billets ORDER BY ID DESC LIMIT 0, 5");
+        $requete_nb = $bdd->query("SELECT COUNT(*) AS nbBillet FROM billets");
+        $data = $requete_nb->fetch();
 
-        while($donnees = $requete_recup->fetch())
+        $nbBillet = $data['nbBillet'];
+        $perPage = 5;
+        $nbPage = ceil($nbBillet/$perPage);
+        
+        if (isset($_GET['p']) AND $_GET['p']>0 AND $_GET['p'] <= $nbPage)
+        {
+            $cPage = $_GET['p'];
+        }
+        else
+        {
+            $cPage = 1;
+        }
+
+        $requete_recup = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date 
+            FROM billets ORDER BY ID DESC LIMIT ".(($cPage-1)*$perPage).",$perPage");
+
+        while ($donnees = $requete_recup->fetch())
         {
             ?>
             <article class="news">
@@ -28,8 +45,20 @@
             <p><?php echo htmlspecialchars_decode($donnees['contenu']); ?></br>
             <em><a href="commentaires.php?ID=<?php echo $donnees['id']; ?>">Commentaires</a></em>
             </p>
-           </article>
+            </article>
             <?php
+        }
+        echo "Page :";
+        for($i=1 ; $i<=$nbPage ; $i++)
+        {
+            if ($i==$cPage)
+            {
+                echo " $i /";
+            }
+            else
+            {
+                echo " <a href=\"minichat.php?p=$i\">$i</a> /";
+            }
         }          
         
         $requete_recup->closeCursor();

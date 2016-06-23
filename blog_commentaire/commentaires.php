@@ -20,6 +20,7 @@
 
         $requete_nb = $bdd->query("SELECT COUNT(*) AS nbBillet FROM billets");
         $data = $requete_nb->fetch();
+
         $nbBillet = $data['nbBillet'];
         
         if (isset($_GET['ID']) AND $_GET['ID']>0 AND $_GET['ID'] <= $nbBillet)
