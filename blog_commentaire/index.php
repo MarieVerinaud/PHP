@@ -57,7 +57,7 @@
             }
             else
             {
-                echo " <a href=\"minichat.php?p=$i\">$i</a> /";
+                echo " <a href=\"index.php?p=$i\">$i</a> /";
             }
         }          
         

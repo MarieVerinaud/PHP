@@ -47,18 +47,49 @@
             
         <?php
         $requete_recup->closeCursor();
+        
+        $requete_nb = $bdd->query("SELECT COUNT(*) AS nbCommentaire FROM commentaires WHERE id_billet = '$id_commentaire'");
+        $data = $requete_nb->fetch();
+
+        $nbCommentaire = $data['nbCommentaire'];
+        $perPage = 5;
+        $nbPage = ceil($nbCommentaire/$perPage);
+        
+        if (isset($_GET['p']) AND $_GET['p']>0 AND $_GET['p'] <= $nbPage)
+        {
+            $cPage = $_GET['p'];
+        }
+        else
+        {
+            $cPage = 1;
+        }
         ?>
+
         <h2>Commentaires : </h2>
         <?php
 
-        $requete_recup = $bdd->query("SELECT auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y à %Hh%imin%ss') AS date FROM commentaires WHERE id_billet = '$id_commentaire'");
+        $requete_recup = $bdd->query("SELECT auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y à %Hh%imin%ss') AS date 
+            FROM commentaires WHERE id_billet = '$id_commentaire' LIMIT ".(($cPage-1)*$perPage).",$perPage");
         while($donnees = $requete_recup->fetch())
         {
             ?>               
                <p><strong><?php echo htmlspecialchars($donnees['auteur']) . "</strong> le " . htmlspecialchars($donnees['date']); ?></p>
                <p><?php echo htmlspecialchars($donnees['commentaire']); ?></p>
             <?php
-        }        
+        }
+
+        echo "Page :";
+        for($i=1 ; $i<=$nbPage ; $i++)
+        {
+            if ($i==$cPage)
+            {
+                echo " $i /";
+            }
+            else
+            {
+                echo " <a href=\"commentaires.php?ID=$id_commentaire&p=$i\">$i</a> /";
+            }
+        }       
         
         $requete_recup->closeCursor();
         ?>
