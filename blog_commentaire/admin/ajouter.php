@@ -1,13 +1,6 @@
 <?php
 
-try
-{
-	$bdd = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-}
-catch(Exception $e)
-{
-	die('Erreur : '.$e->getMessage());
-}
+include_once('../modele/connexion_sql.php');
 ?>
 <h2><a href="admin.php">Retour à la liste des billets</a></h2>
 

@@ -11,14 +11,7 @@
         </h2>
         
         <?php
-        try
-        {
-            $bdd = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        }
-        catch (Exception $e)
-        {
-                die('Erreur : ' . $e->getMessage());
-        }
+        include_once('../modele/connexion_sql.php');
 
         $requete_recup = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date_creation 
             FROM billets ORDER BY ID DESC");

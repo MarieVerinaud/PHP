@@ -2,21 +2,15 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="vue/styles.css">
         <title>Mon super blog</title>
     </head>
     <body>
         <h1> Mon super blog !</h1>
         <p>Derniers billets du blog :</p>
+
         <?php
-        try
-        {
-            $bdd = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        }
-        catch (Exception $e)
-        {
-                die('Erreur : ' . $e->getMessage());
-        }        
+        include_once('modele/connexion_sql.php');       
 
         $requete_nb = $bdd->query("SELECT COUNT(*) AS nbBillet FROM billets");
         $data = $requete_nb->fetch();
@@ -34,19 +28,26 @@
             $cPage = 1;
         }
 
-        $requete_recup = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date 
-            FROM billets ORDER BY ID DESC LIMIT ".(($cPage-1)*$perPage).",$perPage");
+        include_once('modele/get_billets.php');
 
-        while ($donnees = $requete_recup->fetch())
+        $billets = get_billets((($cPage-1)*$perPage), $perPage);
+
+        foreach($billets as $cle => $billet)
         {
-            ?>
-            <article class="news">
-            <h3><?php echo htmlspecialchars($donnees['titre']). "<em> le " . $donnees['date'] . "</em>"; ?></h3>
-            <p><?php echo htmlspecialchars_decode($donnees['contenu']); ?></br>
-            <em><a href="commentaires.php?ID=<?php echo $donnees['id']; ?>">Commentaires</a></em>
+            $billets[$cle]['titre'] = htmlspecialchars($billet['titre']);
+            $billets[$cle]['contenu'] = nl2br(htmlspecialchars($billet['contenu']));
+        }
+
+        foreach($billets as $billet) 
+        {
+        ?>
+        <article class="news">
+            <h3><?php echo $billet['titre']. "<em> le " . $billet['date_creation'] . "</em>"; ?></h3>
+            <p><?php echo $billet['contenu']; ?></br>
+            <em><a href="commentaires.php?ID=<?php echo $billet['id']; ?>">Commentaires</a></em>
             </p>
-            </article>
-            <?php
+        </article>            
+        <?php
         }
         echo "Page :";
         for($i=1 ; $i<=$nbPage ; $i++)
@@ -60,8 +61,6 @@
                 echo " <a href=\"index.php?p=$i\">$i</a> /";
             }
         }          
-        
-        $requete_recup->closeCursor();
         ?>
                 
     </body>

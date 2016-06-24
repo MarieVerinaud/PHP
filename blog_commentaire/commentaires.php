@@ -2,21 +2,14 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="vue/styles.css">
         <title>Mon super blog</title>
     </head>
     <body>
         <h1> Mon super blog !</h1>
         <a href="index.php">Retour à la liste des billets</a>
         <?php
-        try
-        {
-            $bdd = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        }
-        catch (Exception $e)
-        {
-                die('Erreur : ' . $e->getMessage());
-        }
+        include_once('modele/connexion_sql.php');
 
         $requete_nb = $bdd->query("SELECT COUNT(*) AS nbBillet FROM billets");
         $data = $requete_nb->fetch();
@@ -32,8 +25,7 @@
             $id_commentaire = 1;
         }
 
-        $requete_nb->closeCursor();
-              
+        $requete_nb->closeCursor();              
 
         $requete_recup = $bdd->query("SELECT titre, contenu, DATE_FORMAT(date_creation, '%d/%m/%Y à %Hh%imin%ss') AS date FROM billets WHERE id = '$id_commentaire'");
 
