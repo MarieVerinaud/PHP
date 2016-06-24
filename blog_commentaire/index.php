@@ -12,10 +12,9 @@
         <?php
         include_once('modele/connexion_sql.php');       
 
-        $requete_nb = $bdd->query("SELECT COUNT(*) AS nbBillet FROM billets");
-        $data = $requete_nb->fetch();
-
-        $nbBillet = $data['nbBillet'];
+        include_once('modele/get_nombre_billets.php');
+        
+        $nbBillet = (int)get_nombre_billets();
         $perPage = 5;
         $nbPage = ceil($nbBillet/$perPage);
         
