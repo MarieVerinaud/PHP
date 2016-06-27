@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,5 +25,6 @@
             	<input type="submit" value="S'inscrire"/>
             </p>
         </form>
+        <pre><?php if (isset($_SESSION['message'])){echo $_SESSION['message'];} ?></pre>
     </body>
 </html>

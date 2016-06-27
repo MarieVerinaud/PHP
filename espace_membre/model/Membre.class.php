@@ -50,7 +50,7 @@ class Membre
     {
         if (!empty($nouveauPass))
     	{
-        	$this->pass = $nouveauPass;
+        	$this->pass = sha1($nouveauPass);
         	return true;
     	}
     	else
@@ -59,5 +59,3 @@ class Membre
     	}
     }
 }
-
-?>
