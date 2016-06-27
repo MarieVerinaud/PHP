@@ -12,7 +12,7 @@ class Membre
 
     public function setPseudo($nouveauPseudo)
     {
-        if (!empty($nouveauPseudo) AND //pas encore présent dans la base de données
+        if (!empty($nouveauPseudo))
         {
         	$this->pseudo = $nouveauPseudo;
         	return true;

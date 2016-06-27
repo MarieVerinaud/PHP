@@ -4,36 +4,35 @@
 include_once('Membre.class.php');
 include_once('inscription_post.php');
 
+$pseudo = htmlspecialchars($_POST("pseudo"));
+$eMail = htmlspecialchars($_POST("eMail"));
+$motDePasse = htmlspecialchars($_POST("motDePasse"));
+$confirmationMotDePasse = htmlspecialchars($_POST("confirmationMotDePasse"));
+
 
 $membre = new Membre();
 
-$reponse = $bdd->query('SELECT login FROM membre WHERE login = "' . $_POST['login'] . '" ');
+$reponse = $bdd->query('SELECT pseudo FROM membres WHERE pseudo = "' . $pseudo . '" ');
 $login = $reponse->fetch();
- 
-$reponse = $bdd->query('SELECT mail FROM membre WHERE mail = "' . $_POST['mail'] . '" ');
-$mail = $reponse->fetch();
-if (strtolower($_POST['pseudo']) == strtolower($login['pseudo']))
+
+if (strtolower($pseudo == strtolower($login['pseudo']))
 {
-    $erreur = "Ce pseudo est déjà utilisé.";
+    echo "Ce pseudo est déjà utilisé.";
 }
 else
 {
-    $membre->setPseudo($_POST("pseudo");
+    $membre->setPseudo($pseudo);
 }
 
 
-if(!$membre->setEmail($_POST("eMail")))
+if (!$membre->setEmail($eMail)
 {
     echo "L'email n'est pas valide.";
 }
 
-if(!$membre->setMotDePasse($_POST("motDePasse") AND $_POST("motDePasse")!= $_POST("confirmationMotDePasse"))
+if(!$membre->setMotDePasse($motDePasse) AND $motDePasse!= $confirmationMotDePasse)
 {
     echo "Le mot de passe n'est pas valide.";
 }
-
-
-
-
 
 ?>
