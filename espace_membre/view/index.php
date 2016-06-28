@@ -10,13 +10,17 @@
         	<label>Retapez votre mot de passe : <input type="password" name="confirmationMotDePasse" required/></label>
     	</p>
         <p>
-            <label>Adresse email : <input type="text" name="eMail" value ="<?php if(isset($_POST['eMail'])) echo $_POST['eMail']; ?>" required/></label>
+            <label>Adresse email : <input type="email" name="eMail" value ="<?php if(isset($_POST['eMail'])) echo $_POST['eMail']; ?>" required/></label>
         </p>
     	<p>
         	<button type="submit" class="btn btn-primary">S'inscrire</button> 
         </p>
     </form>    
 
-    <pre><?php if (isset($_SESSION['message'])){echo $_SESSION['message'];} ?></pre>
+    <pre>
+        <?php if (isset($_SESSION['message'])):?>
+            <?php echo($_SESSION['message']);?>
+        <?php endif;?>
+    </pre>
 <?php include_once ('footer.php') ?>
     
