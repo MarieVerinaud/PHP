@@ -1,0 +1,31 @@
+## Ce projet est à faire une fois que tu auras fini ##
+
+- 1) Former une structure de projet ayant cette forme
+    app
+        config
+        core
+            Controller
+            Model
+    src
+        Controllers
+        Models
+        Views
+            Template
+    web
+        css
+        js
+        img
+    index.php
+
+    En  utilisant cette structure tu auras une architecture MVC et quelque chose se rapprochant de Symfony.
+
+    Namespace du projet GestionParc pour la racine, puis après ça dépend des dossiers :)
+
+- 2) Créer une fichier de connexion à la base de données sous forme d'une classe PHP
+        Nom de la classe : Database (et nom du fichier Database.php)
+- 3) Créer un fichier autoload qui te permettra de switcher de vue en fonction de ce que tu choisis.
+    L'autoload doit te permettre de charger la connexion à la base de données et afficher son résultat
+
+- 4) Créer un fichier layout.php qui sera ton fichier de template de base (toutes les vues vont venir s'incorporer dedans).
+    Dans le fichier de layout, mettre un texte lorem ipsum dans une vue index.php pour l'étape 1. La vue index devra donc
+    être intégrée dans le layout, et affichée par l'index.php racine (ton contrôleur frontal).
