@@ -8,7 +8,7 @@ class BDD
 	{
 		try
 		{
-		    $this->connexion = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', 'root');
+		    $this->connexion = new PDO('mysql:host=localhost;dbname=cours_php;charset=utf8', 'root', '');
 		}
 		catch(Exception $e)
 		{

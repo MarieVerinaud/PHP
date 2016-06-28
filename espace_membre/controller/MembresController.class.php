@@ -18,6 +18,9 @@ class MembresController
             $motDePasse = htmlspecialchars($_POST["motDePasse"]);
             $confirmationMotDePasse = htmlspecialchars($_POST["confirmationMotDePasse"]);
 
+            $_SESSION['pseudo'] = $pseudo;
+            $_SESSION['eMail'] = $eMail;
+
 
             if($this->alreadyRegistered($pseudo) === true){
                 $_SESSION['message'] = "Vous êtes déjà inscrit(e) !";
@@ -108,6 +111,7 @@ class MembresController
 
             $req-> closeCursor();
             $_SESSION['message'] = "Votre compte a bien été crée";
+            header('Location:login.php');
 
         }else{
             $_SESSION['message'] = "Merci de vérifier votre saisie.";
