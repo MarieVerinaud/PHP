@@ -2,16 +2,25 @@
 <div class="container">
     <h5>Bienvenue dans l'espace réservé aux membres !</h5>
 
-    <?php 
-
+    <?php
     if (isset($_SESSION['id']) AND isset($_SESSION['pseudo']))
     {
     echo 'Bonjour ' . $_SESSION['pseudo'];
-    }?>
+    ?>
     <br>
-    <a href="login.php"><button>Déjà inscrit ?</button></a>
-    <a href="index.php"><button>S'inscrire</button></a>
-    <a href="deconnexion.php"><button>Deconnexion</button></a>  
+    <a href="deconnexion.php"><button>Deconnexion</button></a>
+    <?php
+    }
+    else
+    {
+        ?>
+        <a href="login.php"><button>Déjà inscrit ?</button></a>
+        <a href="index.php"><button>S'inscrire</button></a>
+        <?php
+    }
+    ?>
+    
+     
 </div>
 
 <?php include_once ('footer.php') ?>
