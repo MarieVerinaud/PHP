@@ -7,7 +7,8 @@
     if (isset($_SESSION['id']) AND isset($_SESSION['pseudo']))
     {
     echo 'Bonjour ' . $_SESSION['pseudo'];
-    }
+    }?>
+    <br>
     <a href="login.php"><button>Déjà inscrit ?</button></a>
     <a href="index.php"><button>S'inscrire</button></a>
     <a href="deconnexion.php"><button>Deconnexion</button></a>  

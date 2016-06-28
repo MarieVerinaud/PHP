@@ -31,5 +31,5 @@ else
     	setcookie('pseudo', '$pseudo', time() + 365*24*3600, null, null, false, true);
     	setcookie('motDePasse', '$pass_hache', time() + 365*24*3600, null, null, false, true);
     }    
-    header('Location:index.php');
+    header('Location:home.php');
 }
