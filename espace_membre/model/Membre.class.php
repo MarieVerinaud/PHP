@@ -46,6 +46,11 @@ class Membre
         mail($this->email, $titre, $message);
     }
 
+    public function getMotdePasse()
+    {
+        return $this->pass;
+    } 
+
     public function setMotdePasse($nouveauPass)
     {
         if (!empty($nouveauPass))

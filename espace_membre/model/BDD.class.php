@@ -4,7 +4,7 @@ class BDD
 {
 	private $connexion;
 	
-	function __construct()
+	public function __construct()
 	{
 		try
 		{

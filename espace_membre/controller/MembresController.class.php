@@ -7,12 +7,10 @@ class MembresController
 {    
     public function inscrireUnMembre()
     {
-        session_start();
         $pseudo = htmlspecialchars($_POST["pseudo"]);
         $eMail = htmlspecialchars($_POST["eMail"]);
         $motDePasse = htmlspecialchars($_POST["motDePasse"]);
         $confirmationMotDePasse = htmlspecialchars($_POST["confirmationMotDePasse"]);
-
 
         $erreur = '';
         $membre = new Membre();
@@ -63,11 +61,12 @@ class MembresController
         $req = $bdd->prepare('INSERT INTO membres(pseudo, pass, email, date_inscription) VALUES(:pseudo, :pass, :email, CURDATE())');
 
         $req->execute(array(
-            'pseudo' => $membre->pseudo,
-            'pass' => $membre->pass,
-            'email' => $membre->email));
+            'pseudo' => $membre->getPseudo(),
+            'pass' => $membre->getMotdePasse(),
+            'email' => $membre->getEmail()));
 
         $req-> closeCursor();
+        $_SESSION['message'] = "Votre compte a bien été crée";
 
         header('Location: index.php');
     }
