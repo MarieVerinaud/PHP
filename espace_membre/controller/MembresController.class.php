@@ -5,7 +5,6 @@ include_once(__DIR__ . '/../model/Membre.class.php');
 
 class MembresController
 {
-
     /**
      * Cette fonction va vérifier la saisie des champs
      */
@@ -23,7 +22,7 @@ class MembresController
 
 
             if($this->alreadyRegistered($pseudo) === true){
-                $_SESSION['message'] = "Vous êtes déjà inscrit(e) !";
+                $_SESSION['message'] = "Ce pseudo est déjà utilisé !";
                 header('Location: index.php');
             }else{
                 $this->inscrireUnMembre($pseudo, $eMail, $motDePasse, $confirmationMotDePasse);

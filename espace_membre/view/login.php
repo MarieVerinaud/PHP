@@ -1,5 +1,8 @@
-<?php include_once ('header.php') ?>
-    <form action="connect.php" method="post">
+<?php 
+include_once ('header.php');
+include_once (__DIR__ . '/../controller/connexion_auto.php');
+?>
+    <form action="../controller/connect.php" method="post">
         <p class="form-group">
         	<label>Pseudo : <input type="text" name="pseudo" value="<?php if(isset($_SESSION['pseudo'])) {echo htmlspecialchars($_SESSION['pseudo']);} ?>" required/></label>
         </p>
@@ -19,4 +22,4 @@
             <?php echo($_SESSION['message']);?>
         <?php endif;?>
     </pre>
-<?php include_once ('footer.php') ?>
+<?php include_once ('footer.php'); ?>

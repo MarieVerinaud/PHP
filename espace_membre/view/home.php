@@ -1,14 +1,19 @@
-<?php include_once ('header.php') ?>
+<?php 
+include_once ('header.php');
+include_once (__DIR__ . '/../controller/connexion_auto.php');
+
+$hasConnexion = isset($_SESSION['id']) AND isset($_SESSION['pseudo']);
+?>
 <div class="container">
     <h5>Bienvenue dans l'espace réservé aux membres !</h5>
 
     <?php
-    if (isset($_SESSION['id']) AND isset($_SESSION['pseudo']))
+    if ($hasConnexion)
     {
     echo 'Bonjour ' . $_SESSION['pseudo'];
     ?>
     <br>
-    <a href="deconnexion.php"><button>Deconnexion</button></a>
+    <a href="../controller/deconnexion.php"><button>Deconnexion</button></a>
     <?php
     }
     else
@@ -23,4 +28,4 @@
      
 </div>
 
-<?php include_once ('footer.php') ?>
+<?php include_once ('footer.php'); ?>

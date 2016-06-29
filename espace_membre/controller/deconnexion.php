@@ -10,4 +10,4 @@ session_destroy();
 setcookie('pseudo', '');
 setcookie('motDePasse', '');
 
-header('Location:home.php');
+header('Location:../view/home.php');
