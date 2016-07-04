@@ -1,98 +1,119 @@
 <?php
 class Partie
 {
-    private $lettresTrouvées = array();
     private $pendu;
     private $mot;
+    private $joueur;
 
-    const MOT_TROUVE = 1;
-    const ESSAIS_EPUISES = 2;
-
-    public function initialiserPartie()
+    public function __construct(Joueur $joueur)
     {
-
-    }
-    public function __construct()
-    {
+        $this->joueur = $joueur;
         $this->pendu = new Pendu();
         $this->mot = new Mot();
     }
 
-    public function proposerUneLettre($lettre)
+    public function vérifierLettre($lettre)
     {
-        if ($this->pendu->partiePerdue() == true)
-        {
-            return self::ESSAIS_EPUISES;
-        }
-
         if ($this->mot->lettrePresente($lettre))
         {
-            array_push($this->lettresTrouvées, $lettre);
+            $this->mot->ajouteLettreTrouvée($lettre);
         }
         else
         {
-            $this->pendu->setEssais($this->pendu->getEssais()+1);
+            $this->pendu->rajouterEssai();
         }
     }
 
-    public function trouverLeMot()
+    public function partieTerminée()
     {
-
+        return $this->partiePerdue() OR $this->partieGagnée();
     }
-    public function commencerNouvellePartie()
-    {
 
+    private function partiePerdue()
+    {
+        return $this->pendu->plusDessais();
+    }
+
+    private function partieGagnée()
+    {
+        return $this->mot->motTrouve();
+    }
+
+    public function continuerPartie()
+    {
+        $lettre = $this->joueur->proposerLettre();
+        $this->vérifierLettre($lettre);
     }
 }
 class Mot
 {
     private $MotAtrouver;
+    private $lettresTrouvées = array();
     public function __construct()
     {
-        $this->MotAtrouver = new BDDMot();
+        $this->MotAtrouver = BDDMot::générerMot();
     }
     public function lettrePresente($lettre)
     {
-        if (strpos($this->MotAtrouver, $lettre) !== false)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (strpos($this->MotAtrouver, $lettre) !== false);
+    }
+
+    public function motTrouve()
+    {
+        return true; //TO DO
+    }
+
+    public function ajouteLettreTrouvée($lettre)
+    {
+        array_push($this->lettresTrouvées, $lettre);
     }
 }
 class BDDMot
 {
     // requête SQL qui va piocher un mot au hasard dans la BDD
-    public function _construct()
+    public static function générerMot()
     {
-
+        return 'Cacahuete';
     }
 }
 class Pendu
 {
     private $essais;
-    public function partiePerdue()
+    public function plusDessais()
     {
-        if ($this->essais === 10)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return $this->essais === 10;
     }
-    public function getEssais()
+    public function rajouterEssai()
     {
-        return $this->essais;
+        $this->essais++;
     }
-    public function setEssais($essais)
+}
+class Joueur
+{
+    private $nom;
+
+    public static function demanderNom()
     {
-        $this->essais = $essais;
+        return "Marie";
+    }
+    public function __construct($nom)
+    {
+        $this->nom = $nom;
+    }
+    public function getNom()
+    {
+        return $this->nom;
+    }
+    public function proposerLettre()
+    {
+        return "a";
     }
 }
 
-$partie = new Partie();
+$nom = Joueur::demanderNom();
+$joueur = new Joueur($nom);
+$partie = new Partie($joueur);
+while(!$partie->partieTerminée())
+{
+    $partie->continuerPartie();
+}
