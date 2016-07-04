@@ -1,7 +1,9 @@
 <?php
 class Partie
 {
-    private lettresTrouvées[];
+    private $lettresTrouvées = array();
+    private $pendu;
+    private $mot;
 
     const MOT_TROUVE = 1;
     const ESSAIS_EPUISES = 2;
@@ -12,25 +14,25 @@ class Partie
     }
     public function __construct()
     {
-
+        $this->pendu = new Pendu();
+        $this->mot = new Mot();
     }
 
-    public function  proposeruneLettre($lettre)
+    public function proposerUneLettre($lettre)
     {
-        if (Pendu::partiePerdu == true)
+        if ($this->pendu->partiePerdue() == true)
         {
-            return ESSAIS_EPUISES;
+            return self::ESSAIS_EPUISES;
         }
 
-        if (Mot::lettrePresente($lettre))
+        if ($this->mot->lettrePresente($lettre))
         {
             array_push($this->lettresTrouvées, $lettre);
         }
         else
         {
-            Pendu::setEssais(Pendu::getEssais()++)
+            $this->pendu->setEssais($this->pendu->getEssais()+1);
         }
-
     }
 
     public function trouverLeMot()
@@ -45,10 +47,9 @@ class Partie
 class Mot
 {
     private $MotAtrouver;
-    private $longueurMot;
     public function __construct()
     {
-        $this->MotAtrouver = BDDMot::générerMot();
+        $this->MotAtrouver = new BDDMot();
     }
     public function lettrePresente($lettre)
     {
@@ -65,7 +66,7 @@ class Mot
 class BDDMot
 {
     // requête SQL qui va piocher un mot au hasard dans la BDD
-    public function générerMot()
+    public function _construct()
     {
 
     }
@@ -93,3 +94,5 @@ class Pendu
         $this->essais = $essais;
     }
 }
+
+$partie = new Partie();
