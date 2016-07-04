@@ -19,6 +19,7 @@ class Client
     }
 
 
+
 class CommandeDéjàPasséeException : Exception
 class VousNePouvezPasPasserUneCommandeQuiNeVousAppartientPasException : Exception
 
@@ -111,6 +112,13 @@ class Commande
         if (articleCommandé = null) {
             return true;
         }
+        else {
+            return false;
+        }
+    }
+
+    bool clientConnecté {
+     return 
     }
 
 
@@ -157,6 +165,6 @@ client.commander(commande)
 
 
 -- Exercice pour améliorer la conception
-* On ne peut pas ajouter un article à une commande si la commande contient déjà l'article.
+* On ne peut pas ajouter un article à une commande si la commande contient déjà l'article. OK
 * On ne peut pas modifier la commande si elle n'appartient pas au client qui souhaite la modifier (astuce: la modification de la commande doit passer par la classe Client !).
 * Dans la classe Commande: factoriser la recherche d'un ArticleCommandé à partir d'un Article.
