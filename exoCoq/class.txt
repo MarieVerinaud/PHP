@@ -1,0 +1,162 @@
+class Client
+    refClient   : int
+    adresse     : string
+
+    Commande passerUneNouvelleCommande() {
+        return BaseDeDonnéeCommandes.creerNouvelleCommandePourLeClient(this.refClient)
+    }
+
+    void commander(Commande commande) {
+        if (commande.peutEtrePassée() == false) {
+            throw new CommandeDéjàPasséeException()
+        }
+
+        if (!commande.appartientAuClient(this)) {
+            throw new VousNePouvezPasPasserUneCommandeQuiNeVousAppartientPasException()
+        }
+
+        BaseDeDonnéeCommandes.enregistrerLaCommande(commande)
+    }
+
+
+class CommandeDéjàPasséeException : Exception
+class VousNePouvezPasPasserUneCommandeQuiNeVousAppartientPasException : Exception
+
+class Article
+    codeEAN     : int
+    nom         : string
+    prixHTEuros : float
+
+
+class ArticleCommandé
+    article     : Article
+    quantité    : int
+
+    __construct(Article article, int quantité) {
+        this.article = article
+        this.quantité = quantité
+    }
+
+
+enum EtatCommande
+    EnCoursDeCreation
+    Enregistrée
+
+
+class Commande
+    numero              : int
+    dateEnregistrement  : long
+    articles            : Array<ArticleCommandé>
+    client              : Client
+    état                : EtatCommande
+
+    void ajouterUnArticle(Article article, int quantité) {
+        if (peutEtreModifiée() AND articleNonPrésent(article)) {
+            this.articles.add(new ArticleCommandé(article, quantité))
+        }
+    }
+
+    void supprimerUnArticle(Article article) {
+        if (peutEtreModifiée()) {
+            ArticleCommandé articleCommandé = null
+            foreach (ArticleCommandé ac in this.articles) {
+                if (ac.article == article) {
+                    articleCommandé = ac
+                    break;
+                }
+            }
+
+            if (articleCommandé != null) {
+                this.articles.remove(articleCommandé)
+            }
+        }
+    }
+
+    void changerQuantitéArticle(Article article, int quantité) {
+        if (peutEtreModifiée()) {
+            ArticleCommandé articleCommandé = null
+            foreach (ArticleCommandé ac in this.articles) {
+                if (ac.article == article) {
+                    articleCommandé = ac
+                    break;
+                }
+            }
+
+            if (articleCommandé != null) {
+                articleCommandé.quantité = quantité
+            }
+        }
+    }
+
+    bool peutEtrePassée() {
+        return this.état == EtatCommande.EnCoursDeCreation
+    }
+
+    bool appartientAuClient(Client client) {
+        return this.refClient == client.refClient
+    }
+
+    bool peutEtreModifiée() {
+        return this.état == EtatCommande.EnCoursDeCreation
+    }
+
+    bool articleNonPrésent(article) {
+        ArticleCommandé articleCommandé = null
+        foreach (ArticleCommandé ac in this.articles) {
+            if (ac.article == article) {
+                articleCommandé = ac
+                break;
+            }
+        }
+        if (articleCommandé = null) {
+            return true;
+        }
+    }
+
+
+class BaseDeDonnéeClients
+    static Client clientAvecReference(int refClient) {
+        // requete sql
+    }
+
+
+class BaseDeDonnéeArticles
+    static Article articleAvecCodeEAN(int codeEAN) {
+        // requete sql
+    }
+
+
+class BaseDeDonnéeCommandes
+    static Commande creerNouvelleCommandePourLeClient(int refClient) {
+        // requete sql
+    }
+
+    static void enregistrerLaCommande(Commande commande) {
+        // requete sql
+    }
+
+/* 
+ * Scenario: le client passe une commande
+ */
+
+Client client = BaseDeDonnéeClient.clientAvecReference(1337)
+Commande commande = client.passerUneNouvelleCommande()
+
+// il peut ajouter des articles
+commande.ajouterUnArticle(BaseDeDonnéeArticles.articleAvecCodeEAN(12), 3)
+commande.ajouterUnArticle(BaseDeDonnéeArticles.articleAvecCodeEAN(28), 1)
+
+// il peut aussi en supprimer
+commande.supprimerUnArticle(BaseDeDonnéeArticles.articleAvecCodeEAN(12))
+
+// il peut modifier les quantités
+commande.changerQuantitéArticle(BaseDeDonnéeArticles.articleAvecCodeEAN(28), 3)
+
+// puis il passe la commande
+client.commander(commande)
+
+
+-- Exercice pour améliorer la conception
+* On ne peut pas ajouter un article à une commande si la commande contient déjà l'article.
+* On ne peut pas modifier la commande si elle n'appartient pas au client qui souhaite la modifier (astuce: la modification de la commande doit passer par la classe Client !).
+* Dans la classe Commande: factoriser la recherche d'un ArticleCommandé à partir d'un Article.
