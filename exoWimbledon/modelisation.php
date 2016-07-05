@@ -4,11 +4,13 @@ class Joueur
     private $nom;
     private $classement;
     private $sexe;
+    private $nbSetsGagnés;
 
     public function __contruct($classement)//infos à chercher en BDD
     {
         $this->classement = $classement;
-        $this->hydrate($donnees);
+        $infosJoueur = BDDATP::infosJoueur($classement);
+        $this->hydrate($infosJoueur);
     }
 
     public function hydrate(array $donnees)
@@ -22,6 +24,11 @@ class Joueur
                 $this->$method($value);
             }
         }
+    }
+    
+    public static function demanderClassement()
+    {
+        return 1;
     }
 
     public function setNom($nom)
@@ -38,6 +45,19 @@ class Joueur
         {
             $this->sexe = $sexe;
         }
+    }
+
+    public function setnbSetsGagnés($nbSetsGagnés)
+    {
+        if (is_int($nbSetsGagnés))
+        {
+            $this->nbSetsGagnés = $nbSetsGagnés;
+        }
+    }
+
+    public function aGagne3Sets()
+    {
+        return $this->nbSetsGagnés >= 3;
     }
 
 }
@@ -73,14 +93,36 @@ class BDDATP
 
 class Partie
 {
+    private $joueur1;
+    private $joueur2;
 
+    public function __construct(Joueur $joueur1, Joueur $joueur2)
+    {
+        $this->joueur1 = $joueur1;
+        $this->joueur2 = $joueur2;
+    }
+
+    public function partieTerminée()
+    {
+        return $this->partiePerdue() OR $this->partieGagnee();
+    }
+
+    public function partiePerdue()
+    {
+        return $this->joueur1->aGagne3Sets() OR $this->joueur2->aGagne3Sets();
+    }
+
+    public function partieGagnee()
+    {
+        return $this->joueur1->aGagne3Sets() OR $this->joueur2->aGagne3Sets();
+    }
 }
 
 
-
+$classement = Joueur::demanderClassement();
 $joueur1 = new Joueur($classement);
 $joueur2 = new Joueur($classement);
-$partie = new Partie();
+$partie = new Partie($joueur1, $joueur2);
 while (!$partie -> partieTerminée())
 {
     $partie->continuer();
