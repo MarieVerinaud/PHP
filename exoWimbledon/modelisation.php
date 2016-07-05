@@ -79,16 +79,13 @@ class BDDATP
     public static function infosJoueur($classement)
     {
         //Requête SQL qui va chercher les infos en fonction du classement
-        $infosJoueur = [];
-
         $q = $this->db->prepare('SELECT * FROM  WHERE classement = :classement');
         $q->execute([':classement' => $classement]);
+        $infosJoueur = $q->fetch(PDO::FETCH_ASSOC);
 
         $q->closeCursor();
         return $infosJoueur;
     }
-        
-    
 }
 
 class Partie
@@ -115,6 +112,14 @@ class Partie
     public function partieGagnee()
     {
         return $this->joueur1->aGagne3Sets() OR $this->joueur2->aGagne3Sets();
+    }
+
+    public function continuer()
+    {
+        if (!$this->partieTerminée())
+        {
+
+        }
     }
 }
 
