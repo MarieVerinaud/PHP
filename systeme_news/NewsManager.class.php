@@ -15,6 +15,12 @@ abstract class NewsManager
         return $news;
     }
 
+    public function countNews()
+    {
+        $db = new NewsManagerPDO;
+        return $db->query('SELECT COUNT(*) FROM news')->fetchColumn();
+    }
+
 }
 
 
