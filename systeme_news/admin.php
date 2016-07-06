@@ -50,6 +50,24 @@ $manager = new NewsManagerPDO;
 
     <table>
         <tr><th>Auteur</th><th>Titre</th><th>Date d'ajout</th><th>Dernière modification</th><th>Action</th></tr>
+        <?php
+        foreach ($manager->getNews() as $news)
+        {
+        if (strlen($news->contenu()) <= 50)
+        {
+        $contenu = $news->contenu();
+        }
+        else
+        {
+        $debut = substr($news->contenu(), 0, 50);
+        $debut = substr($debut, 0, strrpos($debut, ' ')) . '...';
+        $contenu = $debut;
+        }
+        ?>
+        <tr><td><?php echo $news->auteur(); ?></td><td><?php echo $news->titre(); ?></td><td><?php echo $news->dateAjout(); ?></td><td><?php echo $news->dateModif(); ?></td><td><a href="?modifier= <?php echo $news->id(); ?>">Modifier</a> | <a href="?supprimer= <?php echo $news->id(); ?>">Supprimer</a></td>
+        <?php
+        }
+        ?>
     </table>
     </body>
 </html>

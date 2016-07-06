@@ -23,6 +23,7 @@ $manager = new NewsManagerPDO();
         {
             $new = $manager->getOneNews($_GET['id']);
             ?>
+            <p><a href="index.php">Retour à la liste des news</a></p>
             <p>Par <em><?php echo $new['auteur'] ?></em>, le <?php echo $new['dateAjout']; ?></p>
             <h2><?php echo $new['titre']; ?></h2>
             <p><?php echo $new['contenu']; ?></p>
