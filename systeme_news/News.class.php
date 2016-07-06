@@ -2,6 +2,7 @@
 
 class News
 {
+    private $erreurs=[];
     private $id;
     private $auteur;
     private $titre;
@@ -9,16 +10,23 @@ class News
     private $dateAjout;
     private $dateModif;
 
-    public function construct__(array $donnees)
+    const AUTEUR_INVALIDE = 1;
+    const TITRE_INVALIDE = 2;
+    const CONTENU_INVALIDE = 3;
+
+    public function construct__($valeurs=[])
     {
-        $this->hydrate($donnees);
+        if (!empty($valeurs))
+        {
+            $this->hydrate($valeurs);
+        }
     }
 
     public function hydrate(array $donnees)
     {
-        foreach ($donnees as $key => $value)
+        foreach ($donnees as $attribut => $value)
         {
-            $method = 'set'.ucfirst($key);
+            $method = 'set'.ucfirst($attribut);
 
             if (method_exists($this, $method))
             {
@@ -51,21 +59,47 @@ class News
     {
         return $this->dateModif;
     }
+    public function erreurs()
+    {
+        return $this->erreurs;
+    }
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
     public function setAuteur($auteur)
     {
-        $this->auteur = $auteur;
+        if(is_string($auteur) AND !empty($auteur))
+        {
+            $this->auteur = $auteur;
+        }
+        else
+        {
+            $this->erreurs[] = self::AUTEUR_INVALIDE;
+        }
+
     }
     public function setTitre($titre)
     {
-        $this->titre = $titre;
+        if(is_string($titre) AND !empty($titre))
+        {
+            $this->titre = $titre;
+        }
+        else
+        {
+            $this->erreurs[] = self::TITRE_INVALIDE;
+        }
     }
     public function setContenu($contenu)
     {
-        $this->contenu = $contenu;
+        if(is_string($contenu) AND !empty($contenu))
+        {
+            $this->contenu = $contenu;
+        }
+        else
+        {
+            $this->erreurs[] = self::CONTENU_INVALIDE;
+        }
     }
     public function setDateAjout($dateAjout)
     {

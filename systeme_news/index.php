@@ -1,3 +1,14 @@
+<?php
+
+function chargerClasse($classname)
+{
+    require $classname.'.class.php';
+}
+
+spl_autoload_register('chargerClasse');
+$manager = new NewsManagerPDO();
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,12 +18,40 @@
 
     <body>
         <p><a href="admin.php">Accéder à l'espace d'administration</a></p>
-        <h2 style="text-align:center">Liste des 5 dernières news</h2>
-        <h4><a href="?id=3">Un jour, quelqu'un a dit...</a></h4>
-        <p>Fusce volutpat, dui vitae rutrum bibendum, justo dolor ullamcorper turpis, sed varius sem arcu at sem. Curabitur quis magna urna. Ut ullamcorper sollicitudin elit a venenatis. Vestibulum ac massa...</p>
-        <h4><a href="?id=2">Ma première news :)</a></h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac eleifend eros. Donec quam justo, rutrum sit amet tincidunt id, porta eu ante. Sed sed nunc odio. Donec mollis eros vitae arcu sodales...</p>
-        <h4><a href="?id=1">Ouverture d'un système de news</a></h4>
-        <p>Bonne nouvelle : je viens de coder un système de news ! Vous serez ainsi informés en direct live de l'actualité du site.</p>
+        <?php
+        if(isset($_GET['id']))
+        {
+            $new = $manager->getOneNews($_GET['id']);
+            ?>
+            <p>Par <em><?php echo $new['auteur'] ?></em>, le <?php echo $new['dateAjout']; ?></p>
+            <h2><?php echo $new['titre']; ?></h2>
+            <p><?php echo $new['contenu']; ?></p>
+            <?php if ($new['dateModif'] !== NULL)
+            {
+                ?>
+                <p style="text-align: right"><small><em>Modifiée le <?php echo $new['dateModif']; ?></em></small></p>
+                <?php
+            }
+        }
+        else
+        {
+            echo '<h2 style="text-align:center">Liste des 5 dernières news</h2>';
+            foreach ($manager->getNews() as $news)
+            {
+                if (strlen($news->contenu()) <= 200)
+                {
+                    $contenu = $news->contenu();
+                }
+                else
+                {
+                    $debut = substr($news->contenu(), 0, 200);
+                    $debut = substr($debut, 0, strrpos($debut, ' ')) . '...';
+                    $contenu = $debut;
+                }
+                echo '<h4><a href="?id=', $news->id(), '">', $news->titre(), '</a></h4>', "\n",
+                '<p>', nl2br($contenu), '</p>';
+            }
+        }
+        ?>
     </body>
 </html>

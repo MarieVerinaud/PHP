@@ -23,7 +23,8 @@ class NewsManagerPDO extends NewsManager
 
     public function getNews()
     {
-        $q = $this->db->query('SELECT * FROM news LIMIT 0,5');
+        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif 
+FROM news ORDER BY id DESC LIMIT 0,5');
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'News');
 
@@ -37,9 +38,9 @@ class NewsManagerPDO extends NewsManager
         return $this->db->query('SELECT COUNT(*) FROM news')->fetchColumn();
     }
 
-    public function deleteNews(News $news)
+    public function deleteNews($id)
     {
-        $this->db->exec('DELETE FROM news WHERE id= '.$news->id());
+        $this->db->exec('DELETE FROM news WHERE id= '.$id);
     }
 
     public function addNews(News $news)
@@ -82,7 +83,7 @@ class NewsManagerPDO extends NewsManager
 
     public function getOneNews($id)
     {
-        $q = $this->db->query('SELECT * FROM news WHERE id='.$id);
+        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif FROM news WHERE id='.$id);
         $news = $q->fetch(PDO::FETCH_ASSOC);
         $q->closeCursor();
         return $news;

@@ -28,7 +28,7 @@ abstract class NewsManager
     {
     }
     
-    public function getOneNews()
+    public function getOneNews($id)
     {
     }
 

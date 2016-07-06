@@ -1,3 +1,14 @@
+<?php
+function chargerClasse($classname)
+{
+    require $classname.'.class.php';
+}
+
+spl_autoload_register('chargerClasse');
+
+$manager = new NewsManagerPDO;
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,7 +46,7 @@
         </p>
     </form>
 
-    <p style="text-align: center">Il y a actuellement <?php echo countNews(); ?> news. En voici la liste :</p>
+    <p style="text-align: center">Il y a actuellement <?php echo $manager->countNews(); ?> news. En voici la liste :</p>
 
     <table>
         <tr><th>Auteur</th><th>Titre</th><th>Date d'ajout</th><th>Dernière modification</th><th>Action</th></tr>
