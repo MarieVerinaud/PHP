@@ -18,6 +18,7 @@ if(isset($_GET['supprimer']) AND ($_GET['supprimer']>0))
 {
     $id = (int) $_GET['supprimer'];
     $manager->deleteNews($_GET['supprimer']);
+    $message= "La news a bien été supprimée.";
 }
 
 if(isset($_POST['auteur']) AND isset($_POST['titre']) AND isset($_POST['contenu']))
@@ -35,10 +36,16 @@ if(isset($_POST['auteur']) AND isset($_POST['titre']) AND isset($_POST['contenu'
         $id = (int) $_POST['id'];
         $news->setId($id);
         $manager->updateNews($news);
+        $message="La news a bien été mise à jour.";
     }
     else if ($news->isValid())
     {
         $manager->addNews($news);
+        $message = "La news a bien été ajoutée.";
+    }
+    else
+    {
+        $erreurs = $news->erreurs();
     }
 }
 ?>
@@ -68,14 +75,23 @@ if(isset($_POST['auteur']) AND isset($_POST['titre']) AND isset($_POST['contenu'
 
     <body>
     <p><a href=".">Accéder à l'accueil du site</a></p>
+    <?php
+    if (isset($message))
+    {
+        ?>
+        <p style="text-align: center"><?php echo $message; ?></p>
+        <?php
+    }
+    ?>
 
     <form action="admin.php" method="post">
         <p style="text-align: center">
             Auteur : <input type="text" name="auteur" value="<?php if(isset($_GET['modifier'])) echo $newAModifier['auteur']; ?>" /><br />
-
+            <?php if (isset($erreurs) && in_array(News::AUTEUR_INVALIDE, $erreurs)) echo 'L\'auteur est invalide.<br />'; ?>
             Titre : <input type="text" name="titre" value="<?php if(isset($_GET['modifier'])) echo $newAModifier['titre']; ?>" /><br />
-
+            <?php if (isset($erreurs) && in_array(News::TITRE_INVALIDE, $erreurs)) echo 'Le titre est invalide.<br />'; ?>
             Contenu :<br /><textarea rows="8" cols="60" name="contenu"><?php if(isset($_GET['modifier'])) echo $newAModifier['contenu']; ?></textarea><br />
+            <?php if (isset($erreurs) && in_array(News::CONTENU_INVALIDE, $erreurs)) echo 'Le contenu est invalide.<br />'; ?>
             <input type="hidden" name="id" value="<?php if(isset($_GET['modifier'])) echo $newAModifier['id'];?>" />
             <input type="submit" value="<?php if(isset($_GET['modifier'])) echo 'Modifier'; else echo 'Ajouter';?>" />
         </p>
