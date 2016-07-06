@@ -4,21 +4,32 @@ require_once ('NewsManagerMySQLi.class.php');
 
 abstract class NewsManager
 {
+    public function getConnexion()
+    {
+    }
+
     public function getNews()
     {
-        $db = new NewsManagerPDO;
-        $q = $db->query('SELECT * FROM news LIMIT 0,5');
-
-        $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'News');
-
-        $news = $q->fetchAll();
-        return $news;
     }
 
     public function countNews()
     {
-        $db = new NewsManagerPDO;
-        return $db->query('SELECT COUNT(*) FROM news')->fetchColumn();
+    }
+    
+    public function deleteNews($id)
+    {
+    }
+
+    public function addNews(News $news)
+    {
+    }
+    
+    public function updateNews(News $news)
+    {
+    }
+    
+    public function getOneNews()
+    {
     }
 
 }
