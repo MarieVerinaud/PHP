@@ -31,7 +31,7 @@ if(isset($_POST['auteur']) AND isset($_POST['titre']) AND isset($_POST['contenu'
     $news->setTitre($titre);
     $news->setContenu($contenu);
 
-    if (isset($_POST['id']) AND $news->isValid())
+    if ($_POST['id']!="" AND $news->isValid())
     {
         $id = (int) $_POST['id'];
         $news->setId($id);
