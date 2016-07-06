@@ -23,7 +23,7 @@ class NewsManagerMySQLi extends NewsManager
 
     public function getNews()
     {
-        $q = mysqli_query($this->db, 'SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif FROM news LIMIT 0,5');
+        $q = mysqli_query($this->db, 'SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %H:%i\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %H:%i\') AS dateModif FROM news LIMIT 0,5');
 
         $news = $q->mysqli_fetch_assoc();
         mysqli_free_result($q);
@@ -57,23 +57,21 @@ class NewsManagerMySQLi extends NewsManager
 
     public function updateNews(News $news)
     {
-        $date_modif = date("Y-m-d H:i:s");
-
         $q = mysqli_prepare($this->db, '
         UPDATE news
         SET titre = :titre
         , auteur = :auteur
         , contenu = :contenu
-        , dateModif = :dateModif
+        , dateModif = NOW()
         WHERE id = :id');
-        mysqli_stmt_bind_param($q, "ssssi", $news->titre(), $news->auteur(), $news->contenu(), $date_modif, $news->id());
+        mysqli_stmt_bind_param($q, "sssi", $news->titre(), $news->auteur(), $news->contenu(), $news->id());
 
         mysqli_stmt_execute($q);
     }
 
     public function getOneNews($id)
     {
-        $q = mysqli_query($this->db, 'SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif FROM news WHERE id='.$id);
+        $q = mysqli_query($this->db, 'SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %H:%i\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %H:%i\') AS dateModif FROM news WHERE id='.$id);
         $news = $q->mysqli_fetch_object('News');
         mysqli_free_result($q);
         return $news;

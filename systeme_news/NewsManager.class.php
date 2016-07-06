@@ -20,11 +20,11 @@ abstract class NewsManager
     {
     }
 
-    public function addNews(News $news)
+    protected function addNews(News $news)
     {
     }
     
-    public function updateNews(News $news)
+    protected function updateNews(News $news)
     {
     }
     

@@ -23,7 +23,7 @@ class NewsManagerPDO extends NewsManager
 
     public function getNews()
     {
-        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif 
+        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %H:%i\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %H:%i\') AS dateModif 
 FROM news ORDER BY id DESC LIMIT 0,5');
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'News');
@@ -63,18 +63,10 @@ FROM news ORDER BY id DESC LIMIT 0,5');
 
     public function updateNews(News $news)
     {
-        $date_modif = date("Y-m-d H:i:s");
-        $q = $this->db->prepare('
-        UPDATE news
-        SET titre = :titre
-        , auteur = :auteur
-        , contenu = :contenu
-        , dateModif = :dateModif
-        WHERE id = :id');
+        $q = $this->db->prepare('UPDATE news SET titre = :titre, auteur = :auteur, contenu = :contenu, dateModif = NOW() WHERE id = :id');
         $q->bindValue(':titre', $news->titre());
         $q->bindValue(':auteur', $news->auteur());
         $q->bindValue(':contenu', $news->contenu());
-        $q->bindValue(':dateModif', $date_modif);
         $q->bindValue(':id', $news->id());
 
         $q->execute();
@@ -83,7 +75,7 @@ FROM news ORDER BY id DESC LIMIT 0,5');
 
     public function getOneNews($id)
     {
-        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %Hh%imin%ss\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %Hh%imin%ss\') AS dateModif FROM news WHERE id='.$id);
+        $q = $this->db->query('SELECT id, titre, auteur, contenu, DATE_FORMAT(dateAjout, \'%d/%m/%Y à %H:%i\') AS dateAjout, DATE_FORMAT(dateModif, \'%d/%m/%Y à %H:%i\') AS dateModif FROM news WHERE id='.$id);
         $news = $q->fetch(PDO::FETCH_ASSOC);
         $q->closeCursor();
         return $news;

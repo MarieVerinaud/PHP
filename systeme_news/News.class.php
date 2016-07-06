@@ -14,11 +14,11 @@ class News
     const TITRE_INVALIDE = 2;
     const CONTENU_INVALIDE = 3;
 
-    public function construct__($valeurs=[])
+    public function construct__($donnees)
     {
-        if (!empty($valeurs))
+        if (!empty($donnees))
         {
-            $this->hydrate($valeurs);
+            $this->hydrate($donnees);
         }
     }
 
@@ -105,8 +105,15 @@ class News
     {
         $this->dateAjout = $dateAjout;
     }
+
     public function setDateModif($dateModif)
     {
         $this->dateModif = $dateModif;
     }
+
+    public function isValid()
+    {
+        return !(empty($this->auteur) || empty($this->titre) || empty($this->contenu));
+    }
+
 }
