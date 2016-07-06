@@ -43,8 +43,10 @@ class NewsManagerMySQLi extends NewsManager
 
     public function addNews(News $news)
     {
+        $date_ajout = date("Y-m-d H:i:s");
+
         $q = mysqli_prepare($this->db, 'INSERT INTO news(titre, auteur, contenu, dateAjout) VALUES(?, ?, ?, ?)');
-        mysqli_stmt_bind_param($q, "ssss", $news->titre(),$news->auteur(),$news->contenu(),$news->dateAjout());
+        mysqli_stmt_bind_param($q, "ssss", $news->titre(),$news->auteur(),$news->contenu(),$date_ajout);
 
         mysqli_stmt_execute($q);
 
@@ -55,6 +57,8 @@ class NewsManagerMySQLi extends NewsManager
 
     public function updateNews(News $news)
     {
+        $date_modif = date("Y-m-d H:i:s");
+
         $q = mysqli_prepare($this->db, '
         UPDATE news
         SET titre = :titre
@@ -62,7 +66,7 @@ class NewsManagerMySQLi extends NewsManager
         , contenu = :contenu
         , dateModif = :dateModif
         WHERE id = :id');
-        mysqli_stmt_bind_param($q, "ssssi", $news->titre(), $news->auteur(), $news->contenu(), $news->dateModif(), $news->id());
+        mysqli_stmt_bind_param($q, "ssssi", $news->titre(), $news->auteur(), $news->contenu(), $date_modif), $news->id());
 
         mysqli_stmt_execute($q);
     }

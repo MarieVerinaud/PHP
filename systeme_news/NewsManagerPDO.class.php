@@ -44,11 +44,13 @@ class NewsManagerPDO extends NewsManager
 
     public function addNews(News $news)
     {
+        $date_ajout = date("Y-m-d H:i:s");
+
         $q = $this->db->prepare('INSERT INTO news(titre, auteur, contenu, dateAjout) VALUES(:titre, :auteur, :contenu, :dateAjout)');
         $q->bindValue(':titre', $news->titre());
         $q->bindValue(':auteur', $news->auteur());
         $q->bindValue(':contenu', $news->contenu());
-        $q->bindValue(':dateAjout', $news->dateAjout());
+        $q->bindValue(':dateAjout', $date_ajout);
 
         $q->execute();
         $q->closeCursor();
@@ -60,6 +62,7 @@ class NewsManagerPDO extends NewsManager
 
     public function updateNews(News $news)
     {
+        $date_modif = date("Y-m-d H:i:s");
         $q = $this->db->prepare('
         UPDATE news
         SET titre = :titre
@@ -70,7 +73,7 @@ class NewsManagerPDO extends NewsManager
         $q->bindValue(':titre', $news->titre());
         $q->bindValue(':auteur', $news->auteur());
         $q->bindValue(':contenu', $news->contenu());
-        $q->bindValue(':dateModif', $news->dateModif());
+        $q->bindValue(':dateModif', $date_modif);
         $q->bindValue(':id', $news->id());
 
         $q->execute();
